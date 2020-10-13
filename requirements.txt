@@ -1,0 +1,7 @@
+torch==1.4.0
+tqdm
+pandas
+numpy
+scikit-learn
+transformers
+pypinyin
