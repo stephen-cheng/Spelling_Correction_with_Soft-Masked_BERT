@@ -9,9 +9,6 @@ from model.decotor import BiGRU
 
 
 class SoftMaskedBert(nn.Module):
-    """
-    Soft-Masked Bert: https://arxiv.org/pdf/2005.07421.pdf
-    """
     def __init__(self, bert, tokenizer, hidden, layer_n, device):
         super(SoftMaskedBert, self).__init__()
         self.bert = bert

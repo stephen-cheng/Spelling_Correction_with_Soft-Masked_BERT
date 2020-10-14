@@ -203,9 +203,9 @@ if __name__ == '__main__':
         # load dataset
         train = dataset.iloc[train_index]
         val = dataset.iloc[val_index]
-        train = BertDataset(tokenizer, train, max_len=152)
+        train = BertDataset(tokenizer, train, max_len=25)
         train = DataLoader(train, batch_size=8, num_workers=2)
-        val = BertDataset(tokenizer, val, max_len=152)
+        val = BertDataset(tokenizer, val, max_len=25)
         val = DataLoader(val, batch_size=8, num_workers=2)
         # build checkpoints
         model = SoftMaskedBertModel(bert, tokenizer, device)
