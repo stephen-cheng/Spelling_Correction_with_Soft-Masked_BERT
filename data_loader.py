@@ -6,7 +6,7 @@ import os
 
 def load_text_dataset1():
     dataset = []
-    file_path = 'dataset/text.txt'
+    file_path = 'dataset/text_a.txt'
     with open(file_path, 'r') as f:
         for line in f:
             line = line.strip().split(' ')
