@@ -10,13 +10,13 @@ from torch import autograd
 from torch.optim import Adam
 from transformers import BertTokenizer, BertModel, BertConfig
 from optim_schedule import ScheduledOptim
-from torch.utils.data import Dataset
-from torch.utils.data import DataLoader
+from torch.utils.data import Dataset, DataLoader
 from model import SoftMaskedBert
 from sklearn.model_selection import KFold
 MAX_INPUT_LEN = 512
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 torch.autograd.set_detect_anomaly(True)
+torch.cuda.set_device(0)
 
 
 class SoftMaskedBertModel():
@@ -26,9 +26,9 @@ class SoftMaskedBertModel():
         self.tokenizer = tokenizer
         self.model = SoftMaskedBert(bert, self.tokenizer, hidden, layer_n, self.device).to(self.device)
 
-        # if torch.cuda.device_count() > 1:
-        #     print("Using %d GPUS for train" % torch.cuda.device_count())
-        #     self.model = nn.DataParallel(self.model, device_ids=[0,1,2])
+        if torch.cuda.device_count() > 1:
+            print("Using %d GPUS for train" % torch.cuda.device_count())
+            self.model = nn.DataParallel(self.model, device_ids=[0,1,2])
 
         optim = Adam(self.model.parameters(), lr=lr, betas=betas, weight_decay=weight_decay)
         self.optim_schedule = ScheduledOptim(optim, hidden, n_warmup_steps=warmup_steps)
@@ -192,7 +192,7 @@ class BertDataset(Dataset):
 
 
 if __name__ == '__main__':
-    dataset = pd.read_csv('dataset/processed_data.csv')
+    dataset = pd.read_csv('dataset/processed_train.csv')
     dataset.dropna(inplace=True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
@@ -203,9 +203,9 @@ if __name__ == '__main__':
         # load dataset
         train = dataset.iloc[train_index]
         val = dataset.iloc[val_index]
-        train = BertDataset(tokenizer, train, max_len=25)
+        train = BertDataset(tokenizer, train, max_len=200)
         train = DataLoader(train, batch_size=8, num_workers=2)
-        val = BertDataset(tokenizer, val, max_len=25)
+        val = BertDataset(tokenizer, val, max_len=200)
         val = DataLoader(val, batch_size=8, num_workers=2)
         # build checkpoints
         model = SoftMaskedBertModel(bert, tokenizer, device)

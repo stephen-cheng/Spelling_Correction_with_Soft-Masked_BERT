@@ -4,7 +4,7 @@
 import os
 
 
-def load_text_dataset1():
+def load_text_dataset():
     dataset = []
     file_path = 'dataset/text_a.txt'
     with open(file_path, 'r') as f:
@@ -16,9 +16,9 @@ def load_text_dataset1():
     return dataset
 
 
-def load_text_dataset2():
+def load_books_dataset():
     dataset = []
-    file_path = 'data/news1/'
+    file_path = 'dataset/books/'
     for file in os.listdir(file_path):
         index = -1
         with open(file_path+file, 'r') as f:
@@ -48,11 +48,11 @@ def save_data(dataset, fileName):
 
 
 if __name__ == "__main__":
-    dataset1 = load_text_dataset1()
+    dataset1 = load_text_dataset()
     print(len(dataset1))
     print(len(set(dataset1)))
     print(dataset1[0])
-    # dataset2 = load_toutiao_dataset2()
+    # dataset2 = load_books_dataset()
     # print(len(dataset2))
     # print(len(set(dataset2)))
     # print(dataset2[0])

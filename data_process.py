@@ -75,17 +75,17 @@ def random_dataset(dataset, char_dict):
 
 
 if __name__ == '__main__':
-    dataset = load_dataset('dataset/words.txt')
+    dataset = load_dataset('dataset/sentences.txt')
     char_dict = gen_char_dict(dataset)
     process_dataset, process_label = random_dataset(dataset, char_dict)
-    save_data(process_dataset, 'dataset/words_noisy.txt')
+    save_data(process_dataset, 'dataset/sentences_noisy.txt')
     df = pd.DataFrame(columns=['original','noisy','label'])
     df['original'] = dataset
     df['noisy'] = process_dataset
     df['label'] = process_label
     # remove nan rows
     df.dropna(inplace=True)
-    df.to_csv('dataset/processed_data.csv', index=False)
+    # df.to_csv('dataset/processed_data.csv', index=False)
 
     # df = pd.read_csv('dataset/processed_words.csv')
     dataset = df[['original','noisy','label']].values
