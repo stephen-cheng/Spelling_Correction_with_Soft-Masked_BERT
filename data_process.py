@@ -1,16 +1,25 @@
 #!usr/bin/env python
 #-*- coding:utf-8 -*-
 
+import re
 import random
 import pandas as pd
 from data_loader import load_dataset, save_data
 from sklearn.model_selection import train_test_split
 
+def clean_sentence(line):
+    line = re.sub(',', '', line) 
+    line = re.sub('"','', line)
+    line = re.sub("'",'', line)
+    line = re.sub(".",'', line)
+    return line
 
 def gen_char_dict(dataset):
     char_dict = {}
     for line in dataset:
         line = line.strip()
+        line = clean_sentence(line)
+        line = line.split(" ")
         for char in line:
             if len(char) != 0:
                 char_dict[char] = char_dict.get(char, 0) + 1

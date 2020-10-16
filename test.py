@@ -12,7 +12,7 @@ from transformers import BertTokenizer, BertModel, BertConfig
 from optim_schedule import ScheduledOptim
 from torch.utils.data import Dataset, DataLoader
 from model import SoftMaskedBert
-MAX_INPUT_LEN = 512
+MAX_INPUT_LEN = 32
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 torch.autograd.set_detect_anomaly(True)
 torch.cuda.set_device(0)
@@ -58,7 +58,6 @@ class SoftMaskedBertModel():
         self.model = torch.load(file_path)
         self.model.to(self.device)
 
-        return avg_loss / len(data_loader)
 
 
 class BertDataset(Dataset):
@@ -108,7 +107,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     bert = BertModel.from_pretrained('bert-base-uncased')
-    test = BertDataset(tokenizer, dataset, max_len=200)
+    test = BertDataset(tokenizer, dataset, max_len=MAX_INPUT_LEN)
     test = DataLoader(test, batch_size=8, num_workers=2)
     model = SoftMaskedBertModel(bert, tokenizer, device)
     model.load('checkpoints/best_model_{}ford.pt'.format(0))

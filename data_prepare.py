@@ -62,11 +62,11 @@ if __name__ == "__main__":
 	print("There are {} sentences.".format(len(sentences)))
 
 	# Limit the data we will use to train our model
-	max_length = 200
-	min_length = 4
+	max_length = 32
+	min_length = 2
 	good_sentences = []
 	for sentence in sentences:
-	    if len(sentence) <= max_length and len(sentence) >= min_length:
+	    if len(sentence.split()) <= max_length and len(sentence.split()) >= min_length:
 	        good_sentences.append(sentence)
 	print("{} sentences are used to our model.".format(len(good_sentences)))
 	# save the data

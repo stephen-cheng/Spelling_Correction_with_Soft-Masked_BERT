@@ -15,14 +15,24 @@ pip install -r requirements.txt
 
 The length of each sentence is between 4 and 200. So,
 
-- max_len = 200
-- min_len = 4
+- max_len = 32
+- min_len = 2
 
 
 ## How to run?
 
-- Prepare Data: python data_prepare.py
+- Prepare Data: 
 
-- Process Data: python data_process.py
+python data_prepare.py
 
-- Train Models: python train.py
+- Process Data: 
+
+python data_process.py
+
+- Train Models: 
+
+python train.py
+
+- Test Models:
+
+python test.py
